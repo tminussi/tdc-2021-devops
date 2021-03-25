@@ -18,8 +18,8 @@ functions:
   upload:
     handler: handler.upload
     environment:
-      IMAGES_BUCKET: tdc-imagens-2021-trilha-devops
-    role: arn:aws:iam::364350264218:role/tdc-admin
+      IMAGES_BUCKET: ${ssm:${self:custom.stage}-images-bucket}
+    role: ${ssm:${self:custom.stage}-upload-role}
     events:
      - http:
          path: images
@@ -28,8 +28,8 @@ functions:
   download:
     handler: handler.download
     environment:
-      IMAGES_BUCKET: tdc-imagens-2021-trilha-devops
-    role: arn:aws:iam::364350264218:role/tdc-admin
+      IMAGES_BUCKET: ${ssm:${self:custom.stage}-images-bucket}
+    role: ${ssm:${self:custom.stage}-download-role}
     events:
      - http:
          path: images/{id}

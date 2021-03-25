@@ -13,11 +13,11 @@ functions:
   process:
     handler: handler.process
     environment:
-      IMAGES_BUCKET: tdc-imagens-2021-trilha-devops
-    role: arn:aws:iam::364350264218:role/tdc-admin
+      IMAGES_BUCKET: ${ssm:${self:custom.stage}-images-bucket}
+    role: ${ssm:${self:custom.stage}-process-role}
     events:
       - s3:
-          bucket: tdc-imagens-2021-trilha-devops
+          bucket: ${ssm:${self:custom.stage}-images-bucket}
           event: s3:ObjectCreated:*
           rules:
             - prefix: uploads/
