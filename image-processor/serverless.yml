@@ -1,0 +1,25 @@
+service: image-processor
+frameworkVersion: '2'
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+
+functions:
+  process:
+    handler: handler.process
+    environment:
+      IMAGES_BUCKET: tdc-imagens-2021-trilha-devops
+    role: arn:aws:iam::364350264218:role/tdc-admin
+    events:
+      - s3:
+          bucket: tdc-imagens-2021-trilha-devops
+          event: s3:ObjectCreated:*
+          rules:
+            - prefix: uploads/
+            - suffix: .jpg
+          existing: true
